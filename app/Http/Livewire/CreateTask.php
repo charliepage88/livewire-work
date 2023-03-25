@@ -8,7 +8,14 @@ use App\Models\Task;
 
 class CreateTask extends Component
 {
+    /**
+     * @var string
+     */
     public $date;
+
+    /**
+     * @var array
+     */
     public $task = [
         'label'        => '',
         'is_done'      => false,
@@ -17,6 +24,9 @@ class CreateTask extends Component
         'grouped_date' => '',
     ];
 
+    /**
+     * @var array
+     */
     protected $rules = [
         'task.label' => 'required|string|min:5|max:50',
         'task.hours' => 'required|min:1|max:5',
@@ -44,6 +54,11 @@ class CreateTask extends Component
         return view('livewire.create-task');
     }
 
+    /**
+     * Save
+     * 
+     * @return Redirect
+     */
     public function save()
     {
         // validation
@@ -60,5 +75,7 @@ class CreateTask extends Component
 
         // set flash message
         session()->flash('message', 'Task successfully saved.');
+
+        return redirect()->to('/dashboard');
     }
 }

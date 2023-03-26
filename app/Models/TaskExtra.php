@@ -23,6 +23,17 @@ class TaskExtra extends Model
     ];
 
     /**
+     * @var array
+     */
+    protected $fillable = [
+        'label',
+        'is_done',
+        'is_time_in',
+        'hours',
+        'grouped_date',
+    ];
+
+    /**
      * User
      * 
      * @return BelongsTo

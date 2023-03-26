@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Models\Task;
+use App\Models\TaskExtra;
 
 class TasksController extends Controller
 {
@@ -17,9 +18,17 @@ class TasksController extends Controller
     public function dashboard()
     {
         $tasks = Task::where('user_id', auth()->user()->id)->get()->groupBy('grouped_date');
-        $today = Carbon::today()->format('Y-m-d');
+        $extraTasks = TaskExtra::where('user_id', auth()->user()->id)->get()->groupBy('grouped_date');
 
-        return view('tasks/dashboard', compact('tasks', 'today'));
+        $today = Carbon::today()->format('Y-m-d');
+        $todayFull = $today . ' 00:00:00';
+
+        return view('tasks/dashboard', compact(
+            'tasks',
+            'extraTasks',
+            'today',
+            'todayFull',
+        ));
     }
 
     /**

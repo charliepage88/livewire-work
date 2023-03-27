@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
+
+use App\Collections\TaskCollection;
 
 class Task extends Model implements Sortable
 {
@@ -73,5 +76,16 @@ class Task extends Model implements Sortable
     public function buildSortQuery()
     {
         return static::query()->where('user_id', $this->user_id)->where('grouped_date', $this->grouped_date);
+    }
+
+    /**
+     * Create a new Eloquent Collection instance.
+     *
+     * @param  array<int, \Illuminate\Database\Eloquent\Model>  $models
+     * @return \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Database\Eloquent\Model>
+     */
+    public function newCollection(array $models = []): Collection
+    {
+        return new TaskCollection($models);
     }
 }

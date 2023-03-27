@@ -29,6 +29,13 @@
                                 @if ($date !== $todayFull)
                                     <div class="flex items-center justify-between my-6">
                                         <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">{{ str_replace(' 00:00:00', '', $date) }}</h5>
+                                        <span class="text-md text-white">
+                                            @if (Arr::has($extraTasks, $date))
+                                                {{ $taskRows->getTotalHours() + $extraTasks[$date]->getTotalHours() }} total hr(s)
+                                            @else
+                                                {{ $taskRows->getTotalHours() }} total hr(s)
+                                            @endif
+                                        </span>
                                     </div>
 
                                     @foreach($taskRows as $task)
@@ -144,6 +151,15 @@
                         <div class="w-full p-2 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
                             <div class="flex items-center justify-between mb-4">
                                 <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">{{ $today }}</h5>
+                                @if (Arr::has($tasks, $todayFull))
+                                    <span class="text-md text-white">
+                                        @if (Arr::has($extraTasks, $todayFull))
+                                            {{ $tasks[$todayFull]->getTotalHours() + $extraTasks[$todayFull]->getTotalHours() }} total hr(s)
+                                        @else
+                                            {{ $tasks[$todayFull]->getTotalHours() }} total hr(s)
+                                        @endif
+                                    </span>
+                                @endif
                             </div>
 
                             @if (Arr::has($tasks, $todayFull))

@@ -3,9 +3,18 @@
         @error('task.label') <div class="w-full my-3 text-red-500"><span class="error">{{ $message }}</span></div> @enderror
         @error('task.hours') <div class="w-full my-3 text-red-500"><span class="error">{{ $message }}</span></div> @enderror
 
-        <div class="w-full flex mb-6">
+        <div class="w-full flex mb-3">
             {{-- is_done --}}
-            <span class="text-white font-bold mr-4" x-show="!is_editing" x-text="$wire.task.is_done ? 'Done' : 'Pending'"></span>
+            <span class="w-auto inline-block text-white font-bold mr-4" x-show="!is_editing && $wire.task.is_done">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
+            </span>
+            <span class="w-auto inline-block text-white font-bold mr-4" x-show="!is_editing && !$wire.task.is_done">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </span>
             <div x-show="is_editing" class="flex items-start mr-6">
                 <div class="flex items-center h-8">
                     <input wire:model="task.is_done" type="checkbox" class="w-8 h-8 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800">
@@ -13,11 +22,11 @@
             </div>
 
             {{-- label --}}
-            <span class="text-white mr-4" x-show="!is_editing" x-text="$wire.task.label"></span>
+            <span class="w-auto flex-grow inline-block text-white mr-4" x-show="!is_editing" x-text="$wire.task.label"></span>
             <input x-show="is_editing" wire:model.lazy="task.label" type="text" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light mr-6 pr-6" required>
 
             {{-- hours --}}
-            <span class="text-white mr-4" x-show="!is_editing" x-text="$wire.task.hours + ' hour(s)'"></span>
+            <span class="w-auto inline-block text-white mr-4" x-show="!is_editing" x-text="$wire.task.hours + ' hr'"></span>
             <div x-show="is_editing" class="relative font-white mr-6">
                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <svg class="text-white" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -28,7 +37,16 @@
             </div>
 
             {{-- is_time_in --}}
-            <span class="text-white font-bold" x-show="!is_editing" x-text="$wire.task.is_time_in ? 'Time In' : 'Time NOT in'"></span>
+            <span class="w-auto inline-block text-white font-bold" x-show="!is_editing && !$wire.task.is_time_in">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                </svg>
+            </span>
+            <span class="w-auto inline-block text-white font-bold" x-show="!is_editing && $wire.task.is_time_in">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 2.25h-4.5c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125v-9M10.125 2.25h.375a9 9 0 019 9v.375M10.125 2.25A3.375 3.375 0 0113.5 5.625v1.5c0 .621.504 1.125 1.125 1.125h1.5a3.375 3.375 0 013.375 3.375M9 15l2.25 2.25L15 12" />
+                </svg>
+            </span>
             <div x-show="is_editing" class="flex items-start">
                 <div class="flex items-center h-8">
                     <input wire:model="task.is_time_in" type="checkbox" class="w-8 h-8 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800">

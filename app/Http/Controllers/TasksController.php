@@ -17,8 +17,14 @@ class TasksController extends Controller
      */
     public function dashboard()
     {
-        $tasks = Task::where('user_id', auth()->user()->id)->get()->groupBy('grouped_date');
-        $extraTasks = TaskExtra::where('user_id', auth()->user()->id)->get()->groupBy('grouped_date');
+        $tasks = Task::where('user_id', auth()->user()->id)
+            ->orderBy('grouped_date', 'desc')
+            ->get()
+            ->groupBy('grouped_date');
+        $extraTasks = TaskExtra::where('user_id', auth()->user()->id)
+            ->orderBy('grouped_date', 'desc')
+            ->get()
+            ->groupBy('grouped_date');
 
         $today = Carbon::today()->format('Y-m-d');
         $todayFull = $today . ' 00:00:00';

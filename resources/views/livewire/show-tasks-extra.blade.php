@@ -1,5 +1,5 @@
 <div>
-    <div class="flex flex-col" x-data="{ is_editing: @entangle('is_editing'), is_deleting: @entangle('is_deleting') }">
+    <div class="flex flex-col task-row" x-data="{ is_editing: @entangle('is_editing'), is_deleting: @entangle('is_deleting') }">
         @error('extraTask.label') <div class="w-full my-3 text-red-500"><span class="error">{{ $message }}</span></div> @enderror
         @error('extraTask.hours') <div class="w-full my-3 text-red-500"><span class="error">{{ $message }}</span></div> @enderror
 

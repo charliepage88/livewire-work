@@ -94,12 +94,14 @@ class ShowNotes extends Component
     /**
      * Edit Note
      * 
+     * @param int $note_id
+     * 
      * @return void
      */
-    public function editNote($note)
+    public function editNote(int $note_id)
     {
-        if ($note !== $this->is_editing) {
-            $this->is_editing = $note;
+        if ($note_id !== $this->is_editing) {
+            $this->is_editing = $note_id;
         } else {
             $this->is_editing = null;
         }
@@ -108,12 +110,14 @@ class ShowNotes extends Component
     /**
      * Delete Note
      * 
+     * @param int $note_id
+     * 
      * @return void
      */
-    public function deleteNote($note)
+    public function deleteNote(int $note_id)
     {
-        if ($note !== $this->is_deleting) {
-            $this->is_deleting = $note;
+        if ($note_id !== $this->is_deleting) {
+            $this->is_deleting = $note_id;
         } else {
             $this->is_deleting = null;
         }

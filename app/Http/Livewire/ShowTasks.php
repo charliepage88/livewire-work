@@ -4,54 +4,64 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 
-use App\Models\Task;
-
 class ShowTasks extends Component
 {
     /**
-     * @var Task
+     * @var Collection
      */
-    public Task $task;
+    public $tasks;
 
     /**
-     * @var bool
+     * @var mixed
      */
-    public $is_editing = false;
+    public $is_editing = null;
 
     /**
-     * @var bool
+     * @var mixed
      */
-    public $is_deleting = false;
+    public $is_deleting = null;
 
     /**
      * @var array
      */
     protected $rules = [
-        'task.label'        => 'required|string|min:5|max:50',
-        'task.hours'        => 'required|min:1|max:5',
-        'task.grouped_date' => 'required',
-        'task.is_done'      => 'sometimes',
-        'task.is_time_in'   => 'sometimes',
+        'tasks.*.label'        => 'required|string|min:5|max:50',
+        'tasks.*.hours'        => 'required|min:1|max:5',
+        'tasks.*.grouped_date' => 'required',
+        'tasks.*.is_done'      => 'sometimes',
+        'tasks.*.is_time_in'   => 'sometimes',
     ];
 
     /**
      * Edit Task
      * 
+     * @param int $task_id
+     * 
      * @return void
      */
-    public function editTask()
+    public function editTask(int $task_id)
     {
-        $this->is_editing = !$this->is_editing;
+        if ($task_id !== $this->is_editing) {
+            $this->is_editing = $task_id;
+        } else {
+            $this->is_editing = null;
+        }
     }
 
     /**
      * Delete Task
      * 
+     * @param int $task_id
+     * 
      * @return void
      */
-    public function deleteTask()
+    public function deleteTask(int $task_id)
     {
-        $this->is_deleting = !$this->is_deleting;
+        if ($task_id !== $this->is_deleting) {
+            $this->is_deleting = $task_id;
+        } else {
+            $this->is_deleting = null;
+        }
     }
 
     /**
@@ -62,13 +72,19 @@ class ShowTasks extends Component
      */
     public function delete()
     {
+        if (!$this->is_deleting) {
+            abort(500, 'Empty task ID when trying to delete :(');
+        }
+
         // delete the task
-        $this->task->delete();
+        $this->tasks->find($this->is_deleting)->delete();
+
+        $this->tasks = $this->tasks->fresh();
 
         // set flash message
         session()->flash('message', 'Task successfully deleted.');
 
-        return redirect()->to('/dashboard');
+        $this->is_deleting = null;
     }
 
     /**
@@ -78,16 +94,22 @@ class ShowTasks extends Component
      */
     public function save()
     {
+        if (!$this->is_editing) {
+            abort(500, 'No edit ID found when clicking save :(');
+        }
+
         // validation
         $this->validate();
 
         // save task
-        $this->task->save();
+        $this->tasks->find($this->is_editing)->save();
+
+        $this->tasks = $this->tasks->fresh();
 
         // set flash message
         session()->flash('message', 'Task successfully saved.');
 
-        return redirect()->to('/dashboard');
+        $this->is_editing = null;
     }
 
     /**

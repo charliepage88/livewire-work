@@ -1,13 +1,13 @@
 <div>
     <div x-data="{ is_editing: @entangle('is_editing'), is_deleting: @entangle('is_deleting') }">
-        @foreach($notes as $i => $note)
+        @foreach($notes as $index => $note)
             <div x-data="{ note: @js($note) }" class="flex flex-col task-row" data-id="{{ $note['id'] }}">
                 @error('notes.*.body') <div class="w-full my-3 text-red-500"><span class="error">{{ $message }}</span></div> @enderror
 
                 <div class="w-full flex mb-3">
                     {{-- body --}}
-                    <span class="w-auto flex-grow inline-block text-white mr-4" x-show="is_editing !== note.id" x-html="note.body"></span>
-                    <textarea x-show="is_editing === note.id" wire:model.lazy="notes.{{ $i }}.body" type="text" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light mr-6 pr-6" required></textarea>
+                    <span class="w-64 flex-grow inline-block text-white mr-4" x-show="is_editing !== note.id">{{ $note['body'] }}</span>
+                    <textarea x-show="is_editing === note.id" wire:model.lazy="notes.{{ $index }}.body" type="text" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light mr-6 pr-6" required></textarea>
 
                     {{-- action items --}}
                     <div x-show="is_editing !== note.id" class="w-48 text-right pl-2">

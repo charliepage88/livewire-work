@@ -38,16 +38,12 @@
                                         </span>
                                     </div>
 
-                                    @foreach($taskRows as $task)
-                                        <livewire:show-tasks :task="$task" />
-                                    @endforeach
+                                    <livewire:show-tasks :tasks="$taskRows" :wire:key="'tasks-' . $date" />
 
                                     @if (Arr::has($extraTasks, $date))
                                         <hr class="my-5" />
 
-                                        @foreach($extraTasks[$date] as $extraTask)
-                                            <livewire:show-tasks-extra :extraTask="$extraTask" />
-                                        @endforeach
+                                        <livewire:show-tasks-extra :tasks="$extraTasks[$date]" :wire:key="'tasks-extra-' . $date" />
                                     @endif
 
                                     <hr class="my-5" />
@@ -75,18 +71,14 @@
 
                             @if (Arr::has($tasks, $todayFull))
                                 <div id="tasksToday" x-ref="tasksToday">
-                                    @foreach($tasks[$todayFull] as $task)
-                                        <livewire:show-tasks :task="$task" />
-                                    @endforeach
+                                    <livewire:show-tasks :tasks="$tasks[$todayFull]" :wire:key="'tasks-today'" />
                                 </div>
                             @endif
 
                             @if (Arr::has($extraTasks, $todayFull))
                                 <hr class="my-5" />
 
-                                @foreach($extraTasks[$todayFull] as $extraTask)
-                                    <livewire:show-tasks-extra :extraTask="$extraTask" />
-                                @endforeach
+                                <livewire:show-tasks-extra :tasks="$extraTasks[$todayFull]" :wire:key="'tasks-extra-today'" />
                             @endif
 
                             <div class="mt-6">
@@ -99,7 +91,6 @@
                                 <hr class="my-5" />
 
                                 <livewire:show-notes :date="$today" :notes="Arr::has($notesByDate, $todayFull) ? $notesByDate[$todayFull] : []" />
-                                {{-- <livewire:show-notes :date="$today" :notes="Arr::has($notesByDate, $todayFull) ? $notesByDate[$todayFull]->toArray() : []" /> --}}
                             </div>
                         </div>
                     </div>

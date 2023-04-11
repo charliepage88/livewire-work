@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Scout\Searchable;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 
@@ -15,6 +16,7 @@ use App\Collections\TaskCollection;
 class Task extends Model implements Sortable
 {
     use HasFactory,
+        Searchable,
         SortableTrait;
 
     /**
@@ -87,5 +89,19 @@ class Task extends Model implements Sortable
     public function newCollection(array $models = []): Collection
     {
         return new TaskCollection($models);
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array<string, mixed>
+     */
+    public function toSearchableArray(): array
+    {
+        $data = $this->toArray();
+
+        $data['user'] = $this->user->toArray();
+
+        return $data;
     }
 }

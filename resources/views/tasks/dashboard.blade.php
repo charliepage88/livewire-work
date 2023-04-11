@@ -49,6 +49,10 @@
                                             <livewire:show-tasks-extra :extraTask="$extraTask" />
                                         @endforeach
                                     @endif
+
+                                    <hr class="my-5" />
+
+                                    <livewire:show-notes :date="$date" :notes="Arr::has($notesByDate, $date) ? $notesByDate[$date] : []" />
                                 @endif
                             @endforeach
                         </div>
@@ -91,6 +95,11 @@
                                 <hr class="my-5" />
 
                                 <livewire:create-extra-task :date="$today" />
+
+                                <hr class="my-5" />
+
+                                <livewire:show-notes :date="$today" :notes="Arr::has($notesByDate, $todayFull) ? $notesByDate[$todayFull] : []" />
+                                {{-- <livewire:show-notes :date="$today" :notes="Arr::has($notesByDate, $todayFull) ? $notesByDate[$todayFull]->toArray() : []" /> --}}
                             </div>
                         </div>
                     </div>

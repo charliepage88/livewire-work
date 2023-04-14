@@ -4,10 +4,20 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 
-use App\Models\TaskExtra;
+use App\Models\Task;
 
-class ShowTasksExtra extends Component
+class ManageTasks extends Component
 {
+    /**
+     * @var string
+     */
+    public $date;
+
+    /**
+     * @var bool
+     */
+    public $canCreate = true;
+
     /**
      * @var Collection
      */
@@ -33,6 +43,29 @@ class ShowTasksExtra extends Component
         'tasks.*.is_done'      => 'sometimes',
         'tasks.*.is_time_in'   => 'sometimes',
     ];
+
+    /**
+     * @var array
+     */
+    public $task = [
+        'label'        => '',
+        'is_done'      => false,
+        'is_time_in'   => false,
+        'hours'        => 0,
+        'grouped_date' => '',
+    ];
+
+    /**
+     * Mount
+     * 
+     * @param string $date
+     * 
+     * @return void
+     */
+    public function mount($date)
+    {
+        $this->task['grouped_date'] = $date;
+    }
 
     /**
      * Edit Task
@@ -68,23 +101,23 @@ class ShowTasksExtra extends Component
 
     /**
      * Delete
-     * Deletes the extra task
+     * Deletes the task
      * 
-     * @return Redirect
+     * @return void
      */
     public function delete()
     {
         if (!$this->is_deleting) {
-            abort(500, 'Empty extra task ID when trying to delete :(');
+            abort(500, 'Empty task ID when trying to delete :(');
         }
 
-        // delete the extra task
+        // delete the task
         $this->tasks->find($this->is_deleting)->delete();
 
         $this->tasks = $this->tasks->fresh();
 
         // set flash message
-        session()->flash('message', 'Extra Task successfully deleted.');
+        session()->flash('message', 'Task successfully deleted.');
 
         $this->is_deleting = null;
     }
@@ -92,7 +125,7 @@ class ShowTasksExtra extends Component
     /**
      * Save
      * 
-     * @return Redirect
+     * @return void
      */
     public function save()
     {
@@ -109,9 +142,49 @@ class ShowTasksExtra extends Component
         $this->tasks = $this->tasks->fresh();
 
         // set flash message
-        session()->flash('message', 'Extra Task successfully saved.');
+        session()->flash('message', 'Task successfully saved.');
 
         $this->is_editing = null;
+    }
+
+    /**
+     * Create
+     * 
+     * @return void
+     */
+    public function create()
+    {
+        // validation
+        $this->validate([
+            'task.label' => 'required|string|min:5|max:50',
+            'task.hours' => 'required|min:1|max:5',
+        ]);
+
+        // save task
+        $task = new Task;
+
+        $task->fill($this->task);
+
+        $task->user_id = auth()->user()->id;
+        $task->grouped_date = $this->date;
+
+        $task->save();
+
+        // set flash message
+        session()->flash('message', 'Task successfully saved.');
+
+        if (is_array($this->tasks)) {
+            $this->tasks = collect([]);
+        }
+
+        $this->tasks->push($task);
+
+        $this->task = [
+            'label'        => '',
+            'is_done'      => false,
+            'is_time_in'   => false,
+            'hours'        => 0,
+        ];
     }
 
     /**
@@ -121,6 +194,6 @@ class ShowTasksExtra extends Component
      */
     public function render()
     {
-        return view('livewire.show-tasks-extra');
+        return view('livewire.manage-tasks');
     }
 }

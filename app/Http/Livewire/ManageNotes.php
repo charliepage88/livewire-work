@@ -6,12 +6,17 @@ use Livewire\Component;
 
 use App\Models\TaskNote;
 
-class ShowNotes extends Component
+class ManageNotes extends Component
 {
     /**
      * @var string
      */
     public $date;
+
+    /**
+     * @var bool
+     */
+    public $canCreate = true;
 
     /**
      * @var Collection
@@ -21,7 +26,7 @@ class ShowNotes extends Component
     /**
      * @var array
      */
-    public $newNote = [
+    public $note = [
         'body'         => '',
         'grouped_date' => '',
     ];
@@ -54,24 +59,14 @@ class ShowNotes extends Component
     public function mount($date = null)
     {
         if (!empty($date)) {
-            $this->newNote['grouped_date'] = $date;
+            $this->note['grouped_date'] = $date;
         }
-    }
-
-    /**
-     * Render
-     * 
-     * @return View
-     */
-    public function render()
-    {
-        return view('livewire.show-notes');
     }
 
     /**
      * Save
      * 
-     * @return Redirect
+     * @return void
      */
     public function save()
     {
@@ -127,7 +122,7 @@ class ShowNotes extends Component
      * Delete
      * Deletes the task note
      * 
-     * @return Redirect
+     * @return void
      */
     public function delete()
     {
@@ -153,14 +148,14 @@ class ShowNotes extends Component
      */
     public function create()
     {
-        $validatedData = $this->validate([
-            'newNote.body' => 'required',
+        $this->validate([
+            'note.body' => 'required',
         ]);
 
         // save task note
         $note = new TaskNote;
 
-        $note->fill($this->newNote);
+        $note->fill($this->note);
 
         $note->user_id = auth()->user()->id;
 
@@ -175,6 +170,16 @@ class ShowNotes extends Component
 
         $this->notes->push($note);
 
-        $this->newNote['body'] = '';
+        $this->note['body'] = '';
+    }
+
+    /**
+     * Render
+     * 
+     * @return View
+     */
+    public function render()
+    {
+        return view('livewire.manage-notes');
     }
 }

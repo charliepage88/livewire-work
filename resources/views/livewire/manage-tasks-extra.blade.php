@@ -57,7 +57,7 @@
                         </span>
                     @endif
 
-                    <div x-show="is_editing" class="flex items-start">
+                    <div x-show="is_editing === task.id" class="flex items-start">
                         <div class="flex items-center h-8">
                             <input wire:model="tasks.{{ $i }}.is_time_in" type="checkbox" class="w-8 h-8 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800">
                         </div>

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Task;
 use App\Models\TaskExtra;
 use App\Models\TaskNote;
+use App\Models\TaskPhoto;
 
 class TasksController extends Controller
 {
@@ -32,6 +33,10 @@ class TasksController extends Controller
             ->orderBy('grouped_date', 'desc')
             ->get()
             ->groupBy('grouped_date');
+        $photosByDate = TaskPhoto::where('user_id', auth()->user()->id)
+            ->orderBy('grouped_date', 'desc')
+            ->get()
+            ->groupBy('grouped_date');
 
         $today = Carbon::today()->format('Y-m-d');
         $todayFull = $today . ' 00:00:00';
@@ -42,6 +47,7 @@ class TasksController extends Controller
             'today',
             'todayFull',
             'notesByDate',
+            'photosByDate',
         ));
     }
 

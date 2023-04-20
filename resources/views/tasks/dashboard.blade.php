@@ -49,6 +49,10 @@
                                     <hr class="my-5" />
 
                                     <livewire:manage-notes :canCreate="false" :date="$date" :notes="Arr::has($notesByDate, $date) ? $notesByDate[$date] : []" />
+
+                                    <div class="mt-2">
+                                        <livewire:manage-task-photos :canCreate="false" :grouped_date="$date" :photos="Arr::has($photosByDate, $date) ? $photosByDate[$date] : []" />
+                                    </div>
                                 @endif
                             @endforeach
                         </div>
@@ -79,6 +83,10 @@
 
                             <div class="mt-6">
                                 <livewire:manage-notes :date="$today" :notes="Arr::has($notesByDate, $todayFull) ? $notesByDate[$todayFull] : []" />
+                            </div>
+
+                            <div class="mt-2">
+                                <livewire:manage-task-photos :grouped_date="$today" :photos="Arr::has($photosByDate, $todayFull) ? $photosByDate[$todayFull] : []" />
                             </div>
                         </div>
                     </div>

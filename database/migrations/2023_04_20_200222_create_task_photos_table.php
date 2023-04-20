@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('task_notes', function (Blueprint $table) {
+        Schema::create('task_photos', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->text('body');
+            $table->date('grouped_date');
+            $table->string('photo');
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('task_notes');
+        Schema::dropIfExists('task_photos');
     }
 };

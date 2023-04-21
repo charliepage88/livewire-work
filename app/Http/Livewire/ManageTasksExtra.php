@@ -112,7 +112,13 @@ class ManageTasksExtra extends Component
         }
 
         // delete the extra task
-        $this->tasks->find($this->is_deleting)->delete();
+        if (get_class($this->tasks) === 'Illuminate\Database\Eloquent\Collection') {
+            $task = $this->tasks->find($this->is_deleting);
+        } else {
+            $task = TaskExtra::find($this->is_deleting);
+        }
+
+        $task->delete();
 
         $this->tasks = $this->tasks->fresh();
 

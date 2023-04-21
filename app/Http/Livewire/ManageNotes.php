@@ -131,7 +131,13 @@ class ManageNotes extends Component
         }
 
         // delete the task note
-        $this->notes->find($this->is_deleting)->delete();
+        if (get_class($this->notes) === 'Illuminate\Database\Eloquent\Collection') {
+            $note = $this->notes->find($this->is_deleting);
+        } else {
+            $note = TaskNote::find($this->is_deleting);
+        }
+
+        $note->delete();
 
         $this->notes = $this->notes->fresh();
 

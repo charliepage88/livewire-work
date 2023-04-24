@@ -104,4 +104,19 @@ class Task extends Model implements Sortable
 
         return $data;
     }
+
+    /**
+     * Get Dashboard Tasks
+     * 
+     * @return Collection
+     */
+    public static function getDashboardTasks()
+    {
+        return (new Task)::where('user_id', auth()->user()->id)
+            ->orderBy('grouped_date', 'desc')
+            ->orderBy('position', 'asc')
+            ->get()
+            ->groupBy('grouped_date')
+            ->toBase();
+    }
 }

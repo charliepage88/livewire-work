@@ -2,15 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Laravel\Scout\Searchable;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
-
-use App\Collections\TaskExtraCollection;
 
 class TaskExtra extends Model implements Sortable
 {
@@ -70,17 +67,6 @@ class TaskExtra extends Model implements Sortable
     }
 
     /**
-     * Create a new Eloquent Collection instance.
-     *
-     * @param  array<int, \Illuminate\Database\Eloquent\Model>  $models
-     * @return \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Database\Eloquent\Model>
-     */
-    public function newCollection(array $models = []): Collection
-    {
-        return new TaskExtraCollection($models);
-    }
-
-    /**
      * Get the indexable data array for the model.
      *
      * @return array<string, mixed>
@@ -92,5 +78,20 @@ class TaskExtra extends Model implements Sortable
         $data['user'] = $this->user->toArray();
 
         return $data;
+    }
+
+    /**
+     * Get Dashboard Tasks
+     * 
+     * @return Collection
+     */
+    public static function getDashboardTasks()
+    {
+        return (new TaskExtra)::where('user_id', auth()->user()->id)
+            ->orderBy('grouped_date', 'desc')
+            ->orderBy('position', 'asc')
+            ->get()
+            ->groupBy('grouped_date')
+            ->toBase();
     }
 }

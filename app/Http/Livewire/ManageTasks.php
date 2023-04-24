@@ -126,6 +126,8 @@ class ManageTasks extends Component
         session()->flash('message', 'Task successfully deleted.');
 
         $this->is_deleting = null;
+
+        $this->emit('taskUpdate');
     }
 
     /**
@@ -151,6 +153,8 @@ class ManageTasks extends Component
         session()->flash('message', 'Task successfully saved.');
 
         $this->is_editing = null;
+
+        $this->emit('taskUpdate');
     }
 
     /**
@@ -191,6 +195,8 @@ class ManageTasks extends Component
             'is_time_in'   => false,
             'hours'        => 0,
         ];
+
+        $this->emit('taskUpdate');
     }
 
     /**

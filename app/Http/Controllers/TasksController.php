@@ -19,24 +19,18 @@ class TasksController extends Controller
      */
     public function dashboard()
     {
-        $tasks = Task::where('user_id', auth()->user()->id)
-            ->orderBy('grouped_date', 'desc')
-            ->orderBy('position', 'asc')
-            ->get()
-            ->groupBy('grouped_date');
-        $extraTasks = TaskExtra::where('user_id', auth()->user()->id)
-            ->orderBy('grouped_date', 'desc')
-            ->orderBy('position', 'asc')
-            ->get()
-            ->groupBy('grouped_date');
+        $tasks = Task::getDashboardTasks();
+        $extraTasks = TaskExtra::getDashboardTasks();
         $notesByDate = TaskNote::where('user_id', auth()->user()->id)
             ->orderBy('grouped_date', 'desc')
             ->get()
-            ->groupBy('grouped_date');
+            ->groupBy('grouped_date')
+            ->toBase();
         $photosByDate = TaskPhoto::where('user_id', auth()->user()->id)
             ->orderBy('grouped_date', 'desc')
             ->get()
-            ->groupBy('grouped_date');
+            ->groupBy('grouped_date')
+            ->toBase();
 
         $today = Carbon::today()->format('Y-m-d');
         $todayFull = $today . ' 00:00:00';

@@ -13,6 +13,8 @@ class ManageTaskPhotos extends Component
 {
     use WithFileUploads;
 
+    public $viewImageModal = null;
+
     /**
      * @var bool
      */
@@ -26,7 +28,7 @@ class ManageTaskPhotos extends Component
     /**
      * @var string
      */
-    public $photo = null;
+    public $newPhoto = null;
 
     /**
      * @var string
@@ -61,7 +63,7 @@ class ManageTaskPhotos extends Component
      */
     public function unsetPhoto()
     {
-        $this->photo = null;
+        $this->newPhoto = null;
     }
 
     /**
@@ -109,7 +111,7 @@ class ManageTaskPhotos extends Component
     public function create()
     {
         $this->validate([
-            'photo' => 'required|image',
+            'newPhoto' => 'required|image',
         ]);
 
         // save task photo
@@ -118,7 +120,7 @@ class ManageTaskPhotos extends Component
         $photo->grouped_date = $this->grouped_date;
         $photo->user_id = auth()->user()->id;
 
-        $photo->photo = $this->photo->store('taskPhotos', 's3');
+        $photo->photo = $this->newPhoto->store('taskPhotos', 's3');
 
         $photo->save();
 
@@ -132,7 +134,7 @@ class ManageTaskPhotos extends Component
         $this->photos->push($photo);
 
         // clear out photo data
-        $this->photo = null;
+        $this->unsetPhoto();
     }
 
     /**

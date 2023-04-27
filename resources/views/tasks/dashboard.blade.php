@@ -71,11 +71,11 @@
                             <livewire:manage-tasks-extra :date="$todayFull" :tasks="Arr::has($extraTasks, $todayFull) ? $extraTasks[$todayFull] : []" :wire:key="'tasks-extra-today'" />
 
                             <div class="mt-6">
-                                <livewire:manage-notes :date="$today" :notes="Arr::has($notesByDate, $todayFull) ? $notesByDate[$todayFull] : []" />
+                                <livewire:manage-notes :date="$todayFull" :notes="Arr::has($notesByDate, $todayFull) ? $notesByDate[$todayFull] : []" />
                             </div>
 
                             <div class="mt-2">
-                                <livewire:manage-task-photos :grouped_date="$today" :photos="Arr::has($photosByDate, $todayFull) ? $photosByDate[$todayFull] : []" />
+                                <livewire:manage-task-photos :grouped_date="$todayFull" :photos="Arr::has($photosByDate, $todayFull) ? $photosByDate[$todayFull] : []" />
                             </div>
                         </div>
                     </div>

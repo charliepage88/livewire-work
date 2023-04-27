@@ -113,14 +113,20 @@ class ManageTasksExtra extends Component
 
         // delete the extra task
         if (get_class($this->tasks) === 'Illuminate\Database\Eloquent\Collection') {
+            $is_collection = true;
             $task = $this->tasks->find($this->is_deleting);
         } else {
+            $is_collection = false;
             $task = TaskExtra::find($this->is_deleting);
         }
 
         $task->delete();
 
-        $this->tasks = $this->tasks->fresh();
+        if ($is_collection) {
+            $this->tasks = $this->tasks->fresh();
+        } else {
+            $this->tasks = TaskExtra::where('grouped_date', $this->date)->get();
+        }
 
         // set flash message
         session()->flash('message', 'Extra Task successfully deleted.');
@@ -145,9 +151,19 @@ class ManageTasksExtra extends Component
         $this->validate();
 
         // save task
+        if (get_class($this->tasks) === 'Illuminate\Database\Eloquent\Collection') {
+            $is_collection = true;
+        } else {
+            $is_collection = false;
+        }
+
         $this->tasks->find($this->is_editing)->save();
 
-        $this->tasks = $this->tasks->fresh();
+        if ($is_collection) {
+            $this->tasks = $this->tasks->fresh();
+        } else {
+            $this->tasks = TaskExtra::where('grouped_date', $this->date)->get();
+        }
 
         // set flash message
         session()->flash('message', 'Extra Task successfully saved.');

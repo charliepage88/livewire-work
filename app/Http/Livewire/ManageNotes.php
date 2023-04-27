@@ -78,7 +78,19 @@ class ManageNotes extends Component
         $this->validate();
 
         // save task note
+        if (get_class($this->notes) === 'Illuminate\Database\Eloquent\Collection') {
+            $is_collection = true;
+        } else {
+            $is_collection = false;
+        }
+
         $this->notes->find($this->is_editing)->save();
+
+        if ($is_collection) {
+            $this->notes = $this->notes->fresh();
+        } else {
+            $this->notes = TaskNote::where('grouped_date', $this->date)->get();
+        }
 
         // set flash message
         session()->flash('message', 'Task note successfully saved.');
@@ -132,14 +144,20 @@ class ManageNotes extends Component
 
         // delete the task note
         if (get_class($this->notes) === 'Illuminate\Database\Eloquent\Collection') {
+            $is_collection = true;
             $note = $this->notes->find($this->is_deleting);
         } else {
+            $is_collection = false;
             $note = TaskNote::find($this->is_deleting);
         }
 
         $note->delete();
 
-        $this->notes = $this->notes->fresh();
+        if ($is_collection) {
+            $this->notes = $this->notes->fresh();
+        } else {
+            $this->notes = TaskNote::where('grouped_date', $this->date)->get();
+        }
 
         // set flash message
         session()->flash('message', 'Task note successfully deleted.');

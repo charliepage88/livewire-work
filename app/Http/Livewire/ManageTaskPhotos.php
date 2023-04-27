@@ -80,8 +80,10 @@ class ManageTaskPhotos extends Component
 
         // delete the task photo
         if (get_class($this->photos) === 'Illuminate\Database\Eloquent\Collection') {
+            $is_collection = true;
             $photo = $this->photos->find($this->is_deleting);
         } else {
+            $is_collection = false;
             $photo = TaskPhoto::find($this->is_deleting);
         }
 
@@ -95,7 +97,11 @@ class ManageTaskPhotos extends Component
         // delete mysql row
         $photo->delete();
 
-        $this->photos = $this->photos->fresh();
+        if ($is_collection) {
+            $this->photos = $this->photos->fresh();
+        } else {
+            $this->photos = TaskPhoto::where('grouped_date', $this->grouped_date)->get();
+        }
 
         // set flash message
         session()->flash('message', 'Photo successfully deleted.');

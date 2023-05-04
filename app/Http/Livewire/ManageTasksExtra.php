@@ -157,7 +157,9 @@ class ManageTasksExtra extends Component
             $is_collection = false;
         }
 
-        $this->tasks->find($this->is_editing)->save();
+        $this->tasks->filter(function ($task) {
+            return $task['id'] === $this->is_editing;
+        })->first()->save();
 
         if ($is_collection) {
             $this->tasks = $this->tasks->fresh();

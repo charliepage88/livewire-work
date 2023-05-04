@@ -84,7 +84,9 @@ class ManageNotes extends Component
             $is_collection = false;
         }
 
-        $this->notes->find($this->is_editing)->save();
+        $this->notes->filter(function ($note) {
+            return $note['id'] === $this->is_editing;
+        })->first()->save();
 
         if ($is_collection) {
             $this->notes = $this->notes->fresh();

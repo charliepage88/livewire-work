@@ -157,9 +157,23 @@ class ManageTasks extends Component
             $is_collection = false;
         }
             
-        $this->tasks->filter(function ($task) {
+        $task = $this->tasks->filter(function ($task) {
             return $task['id'] === $this->is_editing;
-        })->first()->save();
+        })->first();
+
+        if (is_array($task)) {
+            $saveTask = Task::find($task['id']);
+
+            $saveTask->fill($task);
+
+            if (!$saveTask->user_id) {
+                $saveTask->user_id = auth()->user()->id;
+            }
+
+            $saveTask->save();
+        } else {
+            $task->save();
+        }
 
         if ($is_collection) {
             $this->tasks = $this->tasks->fresh();

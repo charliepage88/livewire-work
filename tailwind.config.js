@@ -38,6 +38,8 @@ module.exports = {
         require('@tailwindcss/typography')
     ],
     corePlugins: {
-        space: true
+        space: true,
+        width: true,
+        padding: true,
     }
 };

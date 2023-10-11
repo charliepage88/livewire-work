@@ -57,18 +57,22 @@ class ShowTaskHoursTotal extends Component
      */
     public function getTotalHoursProperty()
     {
-        $taskHours = $this->tasks->filter(function ($task) {
-            return is_array($task) ? $task['is_done'] : $task->is_done;
-        })->sum(function ($task) {
-            return floatval(is_array($task) ? $task['hours'] : $task->hours);
-        });
+        $taskHours = $this->tasks
+            // ->filter(function ($task) {
+            //     return is_array($task) ? $task['is_done'] : $task->is_done;
+            // })
+            ->sum(function ($task) {
+                return floatval(is_array($task) ? $task['hours'] : $task->hours);
+            });
 
         if (Arr::has($this->extraTasks, $this->date)) {
-            $extraTaskHours = $this->extraTasks[$this->date]->filter(function ($task) {
-                return $task->is_done;
-            })->sum(function ($task) {
-                return floatval($task->hours);
-            });
+            $extraTaskHours = $this->extraTasks[$this->date]
+                // ->filter(function ($task) {
+                //     return $task->is_done;
+                // })
+                ->sum(function ($task) {
+                    return floatval($task->hours);
+                });
 
             return $taskHours + $extraTaskHours;
         } else {

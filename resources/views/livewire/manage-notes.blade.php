@@ -7,7 +7,7 @@
                 <div class="w-full flex mb-3">
                     {{-- body --}}
                     @if ($is_editing === $note['id'])
-                        <textarea wire:model.lazy="notes.{{ $index }}.body" type="text" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light mr-6 pr-6" required></textarea>
+                        <textarea wire:model.blur="notes.{{ $index }}.body" type="text" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light mr-6 pr-6" required></textarea>
                     @else
                         <span class="w-64 flex-grow inline-block text-white mr-4">{{ $note['body'] }}</span>
                     @endif

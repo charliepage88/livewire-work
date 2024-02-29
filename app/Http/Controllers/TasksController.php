@@ -22,11 +22,13 @@ class TasksController extends Controller
         $tasks = Task::getDashboardTasks();
         $extraTasks = TaskExtra::getDashboardTasks();
         $notesByDate = TaskNote::where('user_id', auth()->user()->id)
+            ->where('grouped_date', '>=', date('Y-m-d', strtotime('-14 days')))
             ->orderBy('grouped_date', 'desc')
             ->get()
             ->groupBy('grouped_date')
             ->toBase();
         $photosByDate = TaskPhoto::where('user_id', auth()->user()->id)
+            ->where('grouped_date', '>=', date('Y-m-d', strtotime('-14 days')))
             ->orderBy('grouped_date', 'desc')
             ->get()
             ->groupBy('grouped_date')

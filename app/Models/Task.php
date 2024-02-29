@@ -113,6 +113,7 @@ class Task extends Model implements Sortable
     public static function getDashboardTasks()
     {
         return (new Task)::where('user_id', auth()->user()->id)
+            ->where('grouped_date', '>=', date('Y-m-d', strtotime('-14 days')))
             ->orderBy('grouped_date', 'desc')
             ->orderBy('position', 'asc')
             ->get()

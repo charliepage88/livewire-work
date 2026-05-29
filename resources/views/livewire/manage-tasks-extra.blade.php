@@ -33,7 +33,7 @@
 
                     {{-- label --}}
                     @if ($is_editing === $task['id'])
-                        <input wire:model.lazy="tasks.{{ $i }}.label" type="text" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light mr-6 pr-6" required>
+                        <input wire:model="tasks.{{ $i }}.label" type="text" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light mr-6 pr-6" required>
                     @else
                         <span class="w-auto flex-grow inline-block text-white mr-4">{{ $task['label'] }}</span>
                     @endif
@@ -46,7 +46,7 @@
                                     <path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"></path>
                                 </svg>
                             </div>
-                            <input wire:model.lazy="tasks.{{ $i }}.hours" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-12 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <input wire:model="tasks.{{ $i }}.hours" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-12 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
                     @else
                         <span class="w-14 inline-block text-white mr-4">{{ $task['hours'] }} hr</span>

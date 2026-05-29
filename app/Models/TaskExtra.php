@@ -75,9 +75,13 @@ class TaskExtra extends Model implements Sortable
     {
         $data = $this->toArray();
 
-        $data['user'] = $this->user->toArray();
-
-        return $data;
+        return [
+            'id'         => (string) $data['id'],
+            'created_at' => $this->created_at->timestamp,
+            'label'      => $data['label'],
+            'hours'      => floatval($data['hours']),
+        ];
+        //return $data;
     }
 
     /**
@@ -88,6 +92,7 @@ class TaskExtra extends Model implements Sortable
     public static function getDashboardTasks()
     {
         return (new TaskExtra)::where('user_id', auth()->user()->id)
+            ->where('created_at', '>=', date('Y-m-d H:i:s', strtotime('-1 month')))
             ->orderBy('grouped_date', 'desc')
             ->orderBy('position', 'asc')
             ->get()

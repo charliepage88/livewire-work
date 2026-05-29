@@ -12,7 +12,6 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
-        <script defer src="//unpkg.com/alpinejs@3.x.x/dist/cdn.js"></script>
         @vite(['resources/css/app.css', 'resources/sass/app.scss', 'resources/js/app.js'])
 
         <!-- Styles -->
@@ -48,6 +47,6 @@
 
         @stack('modals')
 
-        @livewireScripts
+        @livewireScriptConfig
     </body>
 </html>

@@ -18,12 +18,12 @@
                 <div class="flex flex-column">
                     <div class="w-half">
                         <div class="w-full max-w-xl p-2 bg-white border border-gray-200 rounded-lg shadow sm:p-4 dark:bg-gray-800 dark:border-gray-700">
-                            {{-- <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center justify-between mb-6">
                                 <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">Past Tasks</h5>
-                                <a href="#" class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
+                                <a href="{{ route('tasks.all') }}" class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
                                     View all
                                 </a>
-                            </div> --}}
+                            </div>
 
                             @foreach($tasks as $date => $taskRows)
                                 @if ($date !== $todayFull)

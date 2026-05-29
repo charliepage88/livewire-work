@@ -1,3 +1,18 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* Use the existing v3-style JS config (content paths, Figtree font, forms/typography plugins). */
+@config "../../tailwind.config.js";
+
+/*
+ * Tailwind v4 defaults borders to currentColor; v3 defaulted to gray-200.
+ * Restore the v3 behavior so existing markup keeps its light-gray borders.
+ */
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+}

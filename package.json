@@ -5,20 +5,20 @@
         "build": "vite build"
     },
     "devDependencies": {
-        "@alpinejs/focus": "^3.14.1",
-        "@tailwindcss/forms": "^0.5.9",
-        "@tailwindcss/typography": "^0.5.15",
-        "alpinejs": "^3.14.1",
-        "autoprefixer": "^10.4.20",
-        "axios": "^1.7.7",
-        "laravel-vite-plugin": "^0.8.1",
-        "postcss": "^8.4.47",
-        "sass": "^1.79.3",
-        "tailwindcss": "^3.4.13",
-        "vite": "^4.4.11"
+        "@alpinejs/focus": "^3.15.0",
+        "@tailwindcss/forms": "^0.5.10",
+        "@tailwindcss/typography": "^0.5.19",
+        "@tailwindcss/vite": "^4.1.0",
+        "alpinejs": "^3.15.0",
+        "autoprefixer": "^10.4.21",
+        "axios": "^1.13.0",
+        "laravel-vite-plugin": "^2.0.1",
+        "postcss": "^8.5.6",
+        "sass": "^1.97.1",
+        "tailwindcss": "^4.1.0",
+        "vite": "^7.1.6"
     },
     "dependencies": {
-        "node-sass": "^9.0.0",
-        "sortablejs": "^1.15.3"
+        "sortablejs": "^1.15.6"
     }
 }

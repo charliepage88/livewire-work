@@ -1,7 +1,7 @@
 <?php
 
-test('example', function () {
+test('the root url redirects to the dashboard', function () {
     $response = $this->get('/');
 
-    $response->assertStatus(200);
+    $response->assertRedirect('/dashboard');
 });

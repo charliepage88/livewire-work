@@ -133,7 +133,7 @@ class ManageTasks extends Component
 
         $this->is_deleting = null;
 
-        $this->emit('taskUpdate');
+        $this->dispatch('taskUpdate');
     }
 
     /**
@@ -186,7 +186,7 @@ class ManageTasks extends Component
 
         $this->is_editing = null;
 
-        $this->emit('taskUpdate');
+        $this->dispatch('taskUpdate');
     }
 
     /**
@@ -228,7 +228,7 @@ class ManageTasks extends Component
             'hours'        => 0,
         ];
 
-        $this->emit('taskUpdate');
+        $this->dispatch('taskUpdate');
     }
 
     /**

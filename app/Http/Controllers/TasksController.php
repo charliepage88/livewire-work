@@ -46,6 +46,53 @@ class TasksController extends Controller
     }
 
     /**
+     * View all tasks, grouped into Monday–Friday workweeks (newest first).
+     * Weekend-dated tasks are excluded.
+     *
+     * @return mixed
+     */
+    public function all()
+    {
+        $userId = auth()->user()->id;
+        $weeks = [];
+
+        $ingest = function ($rows, string $bucket) use (&$weeks) {
+            foreach ($rows as $row) {
+                $date = Carbon::parse($row->grouped_date);
+
+                if ($date->isWeekend()) {
+                    continue;
+                }
+
+                $weekStart = $date->copy()->startOfWeek(Carbon::MONDAY);
+                $weekKey = $weekStart->format('Y-m-d');
+                $dayKey = $date->format('Y-m-d');
+
+                if (! isset($weeks[$weekKey])) {
+                    $weeks[$weekKey] = [
+                        'label' => $weekStart->format('M j') . ' – ' . $weekStart->copy()->addDays(4)->format('M j, Y'),
+                        'days'  => [],
+                    ];
+                }
+
+                $weeks[$weekKey]['days'][$dayKey][$bucket][] = $row;
+            }
+        };
+
+        $ingest(Task::where('user_id', $userId)->orderBy('position', 'asc')->get(), 'tasks');
+        $ingest(TaskExtra::where('user_id', $userId)->orderBy('position', 'asc')->get(), 'extras');
+
+        // Newest week first, newest day first within each week.
+        krsort($weeks);
+        foreach ($weeks as &$week) {
+            krsort($week['days']);
+        }
+        unset($week);
+
+        return view('tasks/all', compact('weeks'));
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index()

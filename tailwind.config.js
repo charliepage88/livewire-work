@@ -37,9 +37,4 @@ module.exports = {
         require('@tailwindcss/forms'),
         require('@tailwindcss/typography')
     ],
-    corePlugins: {
-        space: true,
-        width: true,
-        padding: true,
-    }
 };

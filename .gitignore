@@ -17,3 +17,10 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+
+# Agent tooling / BMAD
+/.agents
+/.claude
+/.github
+/_bmad
+/_bmad-output

@@ -56,6 +56,18 @@ class ManageTasks extends Component
     ];
 
     /**
+     * Holds the editable values for the row currently being edited.
+     *
+     * Livewire 4 serializes Eloquent models/collections to the frontend by
+     * reference (class + key) rather than by value, so binding wire:model
+     * straight to $tasks.*.label yields empty inputs. We copy the row's
+     * values into this plain array on edit so they round-trip to the browser.
+     *
+     * @var array
+     */
+    public $editForm = [];
+
+    /**
      * Mount
      * 
      * @param string $date
@@ -78,8 +90,18 @@ class ManageTasks extends Component
     {
         if ($task_id !== $this->is_editing) {
             $this->is_editing = $task_id;
+
+            $task = collect($this->tasks)->firstWhere('id', $task_id);
+
+            $this->editForm = [
+                'label'      => $task['label'],
+                'hours'      => $task['hours'],
+                'is_done'    => (bool) $task['is_done'],
+                'is_time_in' => (bool) $task['is_time_in'],
+            ];
         } else {
             $this->is_editing = null;
+            $this->editForm = [];
         }
     }
 
@@ -148,43 +170,36 @@ class ManageTasks extends Component
         }
 
         // validation
-        $this->validate();
+        $this->validate([
+            'editForm.label'      => 'required|string|min:5|max:50',
+            'editForm.hours'      => 'required|min:1|max:5',
+            'editForm.is_done'    => 'sometimes',
+            'editForm.is_time_in' => 'sometimes',
+        ]);
 
         // save task
-        if (get_class($this->tasks) === 'Illuminate\Database\Eloquent\Collection') {
-            $is_collection = true;
-        } else {
-            $is_collection = false;
-        }
-            
-        $task = $this->tasks->filter(function ($task) {
-            return $task['id'] === $this->is_editing;
-        })->first();
+        $saveTask = Task::find($this->is_editing);
 
-        if (is_array($task)) {
-            $saveTask = Task::find($task['id']);
+        $saveTask->fill([
+            'label'      => $this->editForm['label'],
+            'hours'      => $this->editForm['hours'],
+            'is_done'    => $this->editForm['is_done'],
+            'is_time_in' => $this->editForm['is_time_in'],
+        ]);
 
-            $saveTask->fill($task);
-
-            if (!$saveTask->user_id) {
-                $saveTask->user_id = auth()->user()->id;
-            }
-
-            $saveTask->save();
-        } else {
-            $task->save();
+        if (!$saveTask->user_id) {
+            $saveTask->user_id = auth()->user()->id;
         }
 
-        if ($is_collection) {
-            $this->tasks = $this->tasks->fresh();
-        } else {
-            $this->tasks = Task::where('grouped_date', $this->date)->get();
-        }
+        $saveTask->save();
+
+        $this->tasks = Task::where('grouped_date', $this->date)->get();
 
         // set flash message
         session()->flash('message', 'Task successfully saved.');
 
         $this->is_editing = null;
+        $this->editForm = [];
 
         $this->dispatch('taskUpdate');
     }

@@ -46,10 +46,10 @@ class TaskNote extends Model
      */
     public function toSearchableArray(): array
     {
-        $data = $this->toArray();
-
-        $data['user'] = $this->user->toArray();
-
-        return $data;
+        return [
+            'id'         => (string) $this->id,
+            'body'       => $this->body,
+            'created_at' => $this->created_at->timestamp,
+        ];
     }
 }

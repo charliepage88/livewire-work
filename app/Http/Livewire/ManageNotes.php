@@ -32,6 +32,18 @@ class ManageNotes extends Component
     ];
 
     /**
+     * Holds the editable values for the note currently being edited.
+     *
+     * Livewire 4 serializes Eloquent models/collections to the frontend by
+     * reference (class + key) rather than by value, so binding wire:model
+     * straight to $notes.*.body yields empty inputs. We copy the note's
+     * value into this plain array on edit so it round-trips to the browser.
+     *
+     * @var array
+     */
+    public $editForm = [];
+
+    /**
      * @var mixed
      */
     public $is_editing = null;
@@ -75,29 +87,30 @@ class ManageNotes extends Component
         }
 
         // validation
-        $this->validate();
+        $this->validate([
+            'editForm.body' => 'required',
+        ]);
 
         // save task note
-        if (get_class($this->notes) === 'Illuminate\Database\Eloquent\Collection') {
-            $is_collection = true;
-        } else {
-            $is_collection = false;
+        $saveNote = TaskNote::find($this->is_editing);
+
+        $saveNote->fill([
+            'body' => $this->editForm['body'],
+        ]);
+
+        if (!$saveNote->user_id) {
+            $saveNote->user_id = auth()->user()->id;
         }
 
-        $this->notes->filter(function ($note) {
-            return $note['id'] === $this->is_editing;
-        })->first()->save();
+        $saveNote->save();
 
-        if ($is_collection) {
-            $this->notes = $this->notes->fresh();
-        } else {
-            $this->notes = TaskNote::where('grouped_date', $this->date)->get();
-        }
+        $this->notes = TaskNote::where('grouped_date', $this->date)->get();
 
         // set flash message
         session()->flash('message', 'Task note successfully saved.');
 
         $this->is_editing = null;
+        $this->editForm = [];
     }
 
     /**
@@ -111,8 +124,15 @@ class ManageNotes extends Component
     {
         if ($note_id !== $this->is_editing) {
             $this->is_editing = $note_id;
+
+            $note = collect($this->notes)->firstWhere('id', $note_id);
+
+            $this->editForm = [
+                'body' => $note['body'],
+            ];
         } else {
             $this->is_editing = null;
+            $this->editForm = [];
         }
     }
 

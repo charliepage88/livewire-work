@@ -20,7 +20,10 @@
                         <div class="w-full max-w-xl p-2 bg-white border border-gray-200 rounded-lg shadow sm:p-4 dark:bg-gray-800 dark:border-gray-700">
                             <div class="flex items-center justify-between mb-6">
                                 <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">Past Tasks</h5>
-                                <a href="{{ route('tasks.all') }}" class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
+                                <a href="{{ route('tasks.all') }}" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded-lg shadow-sm hover:bg-blue-100 focus:outline-none focus:ring-4 focus:ring-blue-300 transition dark:bg-gray-700 dark:text-blue-300 dark:border-gray-600 dark:hover:bg-gray-600 dark:focus:ring-blue-800">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                                    </svg>
                                     View all
                                 </a>
                             </div>
